@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutrace_product_key_generator/provider/auth/product_key.dart';
 
 import 'package:nutrace_product_key_generator/screens/auth/productkey.dart';
 import 'provider/auth/loading.dart';
@@ -16,6 +17,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => UploadProvider()),
         ChangeNotifierProvider(create: (_) => Loadingprovider()),
+        ChangeNotifierProvider(create: (_) => UploadKeyProvider()),
       ],
 
       child: const MyApp(),
