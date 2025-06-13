@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nutrace_product_key_generator/provider/auth/login_provider.dart';
-import 'package:nutrace_product_key_generator/provider/auth/upload_provider.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../provider/auth/login_provider.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -34,20 +34,20 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 Consumer<LoginProvider>(
-                  builder: (context, LoginProvider, _) {
+                  builder: (context, loginProvider, _) {
                     return TextFormField(
                       controller: passwordController,
-                      obscureText: !LoginProvider.isVisible,
+                      obscureText: !loginProvider.isVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            LoginProvider.isVisible
+                            loginProvider.isVisible
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
-                          onPressed: () => LoginProvider.toggleVisibility(),
+                          onPressed: () => loginProvider.toggleVisibility(),
                         ),
                       ),
                     );
@@ -75,10 +75,19 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
+                        child:
+                            loginProvider.isLoading
+                                ? LoadingAnimationWidget.waveDots(
+                                  color: const Color(0xffffffff),
+                                  size: 23,
+                                )
+                                : const Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
                       ),
                     );
                   },

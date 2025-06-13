@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:nutrace_product_key_generator/screens/auth/productkey.dart';
+import '../../screens/auth/productkey.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -83,20 +83,16 @@ class LoginProvider extends ChangeNotifier {
           body: jsonEncode({'username': _username, 'password': _password}),
         );
 
-        print('Login response status: ${response.statusCode}');
-        print('Response body: ${response.body}');
-
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           _accessToken = data['accessToken'] ?? data['token'];
-
           if (_accessToken == null) {
             throw Exception('No access token received');
           }
 
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', _accessToken!);
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => ProductKey()),
           );
@@ -116,26 +112,10 @@ class LoginProvider extends ChangeNotifier {
             backgroundColor: const Color.fromARGB(255, 240, 72, 60),
           ),
         );
-        print('Login error: $e');
       } finally {
         _isLoading = false;
         notifyListeners();
       }
-    }
-
-    Future<void> getUser() async {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-
-      final response = await http.get(
-        Uri.parse(
-          'http://no-mole-api-env.eba-9syzkgbp.us-east-1.elasticbeanstalk.com',
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
     }
   }
 

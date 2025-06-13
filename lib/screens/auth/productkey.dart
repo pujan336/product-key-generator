@@ -1,5 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../provider/auth/upload_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductKey extends StatefulWidget {
   const ProductKey({super.key});
@@ -28,9 +32,33 @@ class _GenerateKeyState extends State<ProductKey> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              generatedKey ?? 'Press generate to create a product key.',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  generatedKey ?? 'Press generate to create a product key.',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: 22),
+                generatedKey == null
+                    ? SizedBox()
+                    : InkWell(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: generatedKey!));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Product key is copied.'),
+                            backgroundColor: Colors.purple,
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.copy,
+                        size: 24.0,
+                        color: const Color.fromARGB(255, 187, 33, 243),
+                      ),
+                    ),
+              ],
             ),
             SizedBox(height: 30),
             Container(
@@ -60,35 +88,41 @@ class _GenerateKeyState extends State<ProductKey> {
                     ),
                   ),
                   SizedBox(height: 30),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 45,
-                    child: ElevatedButton(
-                      onPressed:
-                          generatedKey == null
-                              ? null
-                              : () {
-                                print('Confirmed Product Key: $generatedKey');
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: Colors.red,
-                                    content: Text('Product key is generated'),
-                                  ),
-                                );
-
-                                setState(() {
-                                  generatedKey = null;
-                                });
-                              },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF532D71),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                  Consumer<UploadProvider>(
+                    builder: (context, uploadProvider, _) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed:
+                              generatedKey == null
+                                  ? null
+                                  : () {
+                                    context.read<UploadProvider>().upload(
+                                      generatedKey!,
+                                      context,
+                                    );
+                                    setState(() {
+                                      generatedKey = null;
+                                    });
+                                  },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF532D71),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child:
+                              uploadProvider.loading
+                                  ? LoadingAnimationWidget.waveDots(
+                                    color: const Color(0xffffffff),
+                                    size: 33,
+                                  )
+                                  : Text('Upload'),
                         ),
-                      ),
-                      child: Text('Confirm'),
-                    ),
+                      );
+                    },
                   ),
                 ],
               ),
