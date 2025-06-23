@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../provider/auth/upload_provider.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +25,53 @@ class _GenerateKeyState extends State<ProductKey> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(' Product Key Generator')),
+      appBar: AppBar(
+        title: Text(
+          ' Product Key Generator',
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF532D71)),
+        ),
+      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+                margin: EdgeInsets.all(22),
+                child: Column(
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: [
+                          TextSpan(
+                              text:
+                                  'The product key generator allows you to create a unique key by clicking the '),
+                          TextSpan(
+                            text: 'Generate',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                              text: ' button. To upload the key, click the '),
+                          TextSpan(
+                            text: 'Upload',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: ' button. You can then tap the '),
+                          TextSpan(
+                            text: 'copy icon',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                              text:
+                                  ' to copy the key and paste it into your mobile device’s Notes or another secure location. This process ensures that your key is safely stored and easily accessible whenever needed.'),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
+            SizedBox(
+              height: 80,
+            ),
             Consumer<UploadProvider>(builder: (context, uploadProvider, _) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -43,23 +84,15 @@ class _GenerateKeyState extends State<ProductKey> {
                   SizedBox(width: 22),
                   uploadProvider.generatedKey == null
                       ? SizedBox()
-                      : InkWell(
-                          onTap: () {
-                            Clipboard.setData(ClipboardData(
-                                text: uploadProvider.generatedKey!));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Product key is copied.'),
-                                backgroundColor: Colors.purple,
-                              ),
-                            );
+                      : IconButton(
+                          onPressed: () {
+                            uploadProvider.copyKey(context);
                           },
-                          child: Icon(
+                          icon: Icon(
                             Icons.copy,
-                            size: 24.0,
-                            color: const Color.fromARGB(255, 187, 33, 243),
+                            color: Color(0xFF532D71),
                           ),
-                        ),
+                        )
                 ],
               );
             }),
@@ -111,9 +144,10 @@ class _GenerateKeyState extends State<ProductKey> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: uploadProvider.load
+                          child: uploadProvider.loading
                               ? LoadingAnimationWidget.waveDots(
-                                  color: const Color(0xffffffff),
+                                  color:
+                                      const Color.fromARGB(255, 202, 187, 187),
                                   size: 33,
                                 )
                               : Text('Upload'),

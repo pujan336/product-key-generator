@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:nutrace_product_key_generator/const/url/base_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../screens/auth/product_key.dart';
@@ -75,7 +76,7 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
 
       final url = Uri.parse(
-        'http://no-mole-api-env.eba-9syzkgbp.us-east-1.elasticbeanstalk.com/api/auth/login',
+        '$baseUrl/api/auth/login',
       );
 
       try {
