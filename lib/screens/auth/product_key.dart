@@ -26,45 +26,64 @@ class _GenerateKeyState extends State<ProductKey> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          ' Product Key Generator',
-          style:
-              TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF532D71)),
+        title: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.all(22),
+              child: Text(
+                ' Product Key Generator',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF532D71),
+                ),
+              ),
+            )
+          ],
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
                 margin: EdgeInsets.all(22),
                 child: Column(
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                        children: [
-                          TextSpan(
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                              fontSize: 16, color: Colors.black, height: 1.5),
+                          children: [
+                            TextSpan(
                               text:
-                                  'The product key generator allows you to create a unique key by clicking the '),
-                          TextSpan(
-                            text: 'Generate',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                              text: ' button. To upload the key, click the '),
-                          TextSpan(
-                            text: 'Upload',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(text: ' button. You can then tap the '),
-                          TextSpan(
-                            text: 'copy icon',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
+                                  'The product key generator allows you to create a unique key by clicking the ',
+                            ),
+                            TextSpan(
+                              text: 'Generate',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: ' button. To upload the key, click the ',
+                            ),
+                            TextSpan(
+                              text: 'Upload',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: ' button. You can then tap the ',
+                            ),
+                            TextSpan(
+                              text: 'copy icon',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
                               text:
-                                  ' to copy the key and paste it into your mobile device’s Notes or another secure location. This process ensures that your key is safely stored and easily accessible whenever needed.'),
-                        ],
+                                  ' to copy the key and paste it into your mobile device’s Notes or another secure location. This process ensures that your key is safely stored and easily accessible whenever needed.',
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.justify,
                       ),
                     )
                   ],

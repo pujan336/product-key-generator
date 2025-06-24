@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nutrace_product_key_generator/screens/auth/product_key.dart';
 import 'splashscreen/splash_screen.dart';
 import 'provider/auth/loading.dart';
 import 'provider/auth/login_provider.dart';
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ProductKey(),
+      home: SplashScreen(),
     );
   }
 }
